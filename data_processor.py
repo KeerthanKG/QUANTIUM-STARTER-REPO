@@ -25,8 +25,9 @@ df = df.drop(columns=['product', 'price', 'quantity'])
 df = df.rename(columns={"date": "Date", "region": "Region"})
 
 # print(df)
+df = df.sort_values(by="Date")
 
-fig = px.line(df, x="Date", y="Sales")
+fig = px.line(df, x="Date", y="Sales", title="Pink Morsel Sales")
 
 app = Dash()
 
