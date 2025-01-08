@@ -27,16 +27,40 @@ df = df.rename(columns={"date": "Date", "region": "Region"})
 # print(df)
 df = df.sort_values(by="Date")
 
+################################################################################
+
+colors = {
+    'background': '#201F31',
+    'text': '#8B1DFA'
+}
+
 fig = px.line(df, x="Date", y="Sales", title="Pink Morsel Sales")
+
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
 
 app = Dash()
 
-app.layout = html.Div(children=[
-    html.H1(children='Line Graph of Pink Morsel Sales'),
+app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
+    html.H1(
+        children='Line Graph of Pink Morsel Sales',
+        style={
+            'textAlign': 'center',
+            'color': colors['text']
+        }
+    ), 
 
     html.Div(children='''
         A line graph portraying the sales of pink morsels according to time
-    '''),
+    ''', 
+        style={
+            'textAlign': 'center',
+            'color': colors['text']
+        }
+    ),
 
     dcc.RadioItems(
         id='region-selector',
@@ -48,13 +72,21 @@ app.layout = html.Div(children=[
             {'label': 'West', 'value': 'west'}
         ],
         value='all',  # Default selection
-        inline=True  # Display options inline
+        inline=True,  # Display options inline
+        style={
+            'textAlign': 'center',
+            'color': colors['text']
+        }
     ),
 
     dcc.Graph(
         id='Line Graph of Pink Morsel Sales',
-        figure=fig
-    )
+        figure=fig,
+        style={
+            'textAlign': 'center',
+            'color': colors['text']
+        }
+    ),
 ])
 
 @app.callback(
@@ -68,6 +100,12 @@ def update_chart(selected_region):
         filtered_df = df[df['Region'] == selected_region]
 
     fig = px.line(filtered_df, x="Date", y="Sales", title=f"Pink Morsel Sales ({selected_region.capitalize()})")
+
+    fig.update_layout(
+        plot_bgcolor=colors['background'],
+        paper_bgcolor=colors['background'],
+        font_color=colors['text']
+    )
 
     return fig
 
